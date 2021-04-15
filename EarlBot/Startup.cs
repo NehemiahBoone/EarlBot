@@ -18,7 +18,7 @@ namespace EarlBot
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(AppContext.BaseDirectory)
-                .AddYamlFile("_config.yml");
+                .AddYamlFile("_configYAML.yml");
             Configuration = builder.Build();
         }
 
