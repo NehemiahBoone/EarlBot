@@ -26,17 +26,24 @@ namespace EarlBot.Services
 
         public async Task StartAsync()
         {
-            string token = _config["discord"];
-            if (string.IsNullOrEmpty(token))
+            try
             {
-                Console.WriteLine("Provide discord token");
-                return;
+                string token = _config["discord"];
+                if (string.IsNullOrEmpty(token))
+                {
+                    Console.WriteLine("Provide discord token");
+                    return;
+                }
+
+                await _discord.LoginAsync(TokenType.Bot, token);
+                await _discord.StartAsync();
+
+                await _commands.AddModulesAsync(Assembly.GetEntryAssembly(), _provider);
             }
-
-            await _discord.LoginAsync(TokenType.Bot, token);
-            await _discord.StartAsync();
-
-            await _commands.AddModulesAsync(Assembly.GetEntryAssembly(), _provider);
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error: {e.Message}");
+            }
         }
     }
 }

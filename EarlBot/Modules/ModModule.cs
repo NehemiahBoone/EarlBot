@@ -15,13 +15,20 @@ namespace EarlBot.Modules
         [RequireUserPermission(GuildPermission.ManageMessages)]
         public async Task Purge(int amountToPurge)
         {
-            var messages = await Context.Channel.GetMessagesAsync(amountToPurge + 1).FlattenAsync();
-            await (Context.Channel as SocketTextChannel).DeleteMessagesAsync(messages);
+            try
+            {
+                var messages = await Context.Channel.GetMessagesAsync(amountToPurge + 1).FlattenAsync();
+                await (Context.Channel as SocketTextChannel).DeleteMessagesAsync(messages);
 
-            var message = await Context.Channel.SendMessageAsync($"{messages.Count()} messages deleted.");
+                var message = await Context.Channel.SendMessageAsync($"{messages.Count()} messages deleted.");
 
-            await Task.Delay(5000);
-            await message.DeleteAsync();
+                await Task.Delay(5000);
+                await message.DeleteAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error: {e.Message}");
+            }
         }
     }
 }

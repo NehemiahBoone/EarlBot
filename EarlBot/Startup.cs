@@ -22,20 +22,34 @@ namespace EarlBot
 
         public static async Task RunAsync(string[] args)
         {
-            var startup = new Startup(args);
-            await startup.RunAsync();
+            try
+            {
+                var startup = new Startup(args);
+                await startup.RunAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error: {e.Message}");
+            }
         }
 
         public async Task RunAsync()
         {
-            var services = new ServiceCollection();
-            ConfigureServices(services);
+            try
+            {
+                var services = new ServiceCollection();
+                ConfigureServices(services);
 
-            var provider = services.BuildServiceProvider();
-            provider.GetRequiredService<CommandHandler>();
+                var provider = services.BuildServiceProvider();
+                provider.GetRequiredService<CommandHandler>();
 
-            await provider.GetRequiredService<StartupService>().StartAsync();
-            await Task.Delay(-1);
+                await provider.GetRequiredService<StartupService>().StartAsync();
+                await Task.Delay(-1);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error: {e.Message}");
+            }
         }
 
         private void ConfigureServices(IServiceCollection services)

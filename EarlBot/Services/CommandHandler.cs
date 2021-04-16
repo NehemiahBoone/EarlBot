@@ -28,26 +28,34 @@ namespace EarlBot.Services
             Console.WriteLine($"Connected as {_discord.CurrentUser.Username}#{_discord.CurrentUser.Discriminator}");
             return Task.CompletedTask;
         }
-        private async Task OnMessageReceived(SocketMessage arg)
+        private async Task OnMessageReceived(SocketMessage msgReceived)
         {
-            var msg = arg as SocketUserMessage;
-
-            if (msg.Author.IsBot) { return; }
-
-            var context = new SocketCommandContext(_discord, msg);
-
-            int pos = 0;
-            if(msg.HasStringPrefix(_config["prefix"], ref pos) || msg.HasMentionPrefix(_discord.CurrentUser, ref pos))
+            try
             {
-                var result = await _commands.ExecuteAsync(context, pos, _provider);
+                var msg = msgReceived as SocketUserMessage;
 
-                if (!result.IsSuccess)
+                if (msg.Author.IsBot) { return; }
+
+                SocketCommandContext context = new SocketCommandContext(_discord, msg);
+
+                int pos = 0;
+                if (msg.HasStringPrefix(_config["prefix"], ref pos) || msg.HasMentionPrefix(_discord.CurrentUser, ref pos))
                 {
-                    var reason = result.Error;
+                    var result = await _commands.ExecuteAsync(context, pos, _provider);
 
-                    await context.Channel.SendFileAsync($"Error: \n {reason}");
+                    if (!result.IsSuccess)
+                    {
+                        var reason = result.Error;
+
+                        await context.Channel.SendFileAsync($"Error: \n {reason}");
+                    }
                 }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error: {e.Message}");
+            }
+            
         }
     }
 }
