@@ -55,12 +55,12 @@ namespace EarlBot.Modules
             try
             {
                 EmbedBuilder builder = new EmbedBuilder()
-                .WithThumbnailUrl(Context.Guild.IconUrl)
-                .WithTitle($"{Context.Guild.Name} (server info)")
-                .WithColor(new Color(33, 176, 252))
-                .AddField("Created at", Context.Guild.CreatedAt.ToString("MMMM dd, yyyy"))
-                .AddField("Member Count: ", (Context.Guild as SocketGuild).MemberCount)
-                .AddField("Online Users: ", (Context.Guild as SocketGuild).Users.Where(m => m.Status != UserStatus.Offline).Count());
+                    .WithThumbnailUrl(Context.Guild.IconUrl)
+                    .WithTitle($"{Context.Guild.Name} (server info)")
+                    .WithColor(new Color(33, 176, 252))
+                    .AddField("Created at", Context.Guild.CreatedAt.ToString("MMMM dd, yyyy"))
+                    .AddField("Member Count: ", (Context.Guild as SocketGuild).MemberCount)
+                    .AddField("Online Users: ", (Context.Guild as SocketGuild).Users.Where(m => m.Status != UserStatus.Offline).Count());
                 var embed = builder.Build();
                 await Context.Channel.SendMessageAsync(null, false, embed);
             }

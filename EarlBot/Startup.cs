@@ -25,7 +25,7 @@ namespace EarlBot
             try
             {
                 var startup = new Startup(args);
-                await startup.RunAsync();
+                await startup.StartRunAsync();
             }
             catch (Exception e)
             {
@@ -33,7 +33,7 @@ namespace EarlBot
             }
         }
 
-        public async Task RunAsync()
+        public async Task StartRunAsync()
         {
             try
             {
